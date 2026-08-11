@@ -11,14 +11,15 @@
     "at","by","for","with","about","against","between","into","through",
     "during","before","after","above","below","from","up","down","out",
     "off","over","under","again","further","once","here","there","when",
-    "where","why","how","all","any","both","each","few","more","most",
-    "other","some","such","no","nor","not","only","own","same","so","than",
-    "too","very","s","t","can","will","just","don","should","now","is",
-    "are","was","were","be","been","being","have","has","had","having",
-    "do","does","did","doing","would","could","might","must","shall",
-    "this","that","these","those","i","you","he","she","it","we","they",
-    "them","his","her","its","our","your","their","as","also","etc",
-    "including","include","includes","per","via","within","across"
+    "where","why","how","what","who","whom","whose","which","all","any",
+    "both","each","few","more","most","other","some","such","no","nor",
+    "not","only","own","same","so","than","too","very","s","t","can",
+    "will","just","don","should","now","is","are","was","were","be",
+    "been","being","have","has","had","having","do","does","did","doing",
+    "would","could","might","must","shall","this","that","these","those",
+    "i","you","he","she","it","we","they","them","his","her","its","our",
+    "your","their","us","as","also","etc","including","include",
+    "includes","per","via","within","across"
   ]);
 
   const JD_FILLER = new Set([
@@ -48,7 +49,8 @@
     "operations","logistics","procurement","accounting","finance",
     "collaboration","mentoring","stakeholder","agile","scrum","c",
     "typescript","ruby","php","swift","kotlin","golang","rust","mysql",
-    "postgresql","mongodb","redis","api","apis","ux","ui","crm","erp"
+    "postgresql","mongodb","redis","api","apis","ux","ui","crm","erp",
+    "hr","pm","qa","ba","bi"
   ]);
 
   // Matches the maxlength attribute on the JD/resume textareas in
@@ -81,7 +83,19 @@
   }
 
   function isContentWord(word) {
-    return word.length > 1 && !STOPWORDS.has(word) && !JD_FILLER.has(word) && !/^\d+$/.test(word);
+    if (word.length <= 1 || STOPWORDS.has(word) || JD_FILLER.has(word) || /^\d+$/.test(word)) {
+      return false;
+    }
+    // The tokenizer splits on hyphens (so date ranges like "2020-2023"
+    // don't merge into one non-numeric token), which means a hyphenated
+    // compound like "re-engagement" or "long-term" also splits — leaving
+    // fragments like "re" or "co" that read as meaningless on their own.
+    // Real short words we care about are already named in SKILL_HINTS
+    // (ux, ui, ...), so anything else that short isn't a genuine keyword.
+    if (word.length === 2 && !SKILL_HINTS.has(word)) {
+      return false;
+    }
+    return true;
   }
 
   // Light stemmer so manage/managing/managed/manages match.
