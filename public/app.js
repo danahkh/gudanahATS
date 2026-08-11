@@ -469,6 +469,25 @@
   });
 
   // ---------------------------------------------------------------------
+  // Visit counter — best-effort and non-blocking. Stays hidden (rather
+  // than showing "0" or an error) if the endpoint isn't reachable, since
+  // it's decorative and must never get in the way of the actual tool.
+  // ---------------------------------------------------------------------
+
+  const visitCounterEl = document.getElementById("visit-counter");
+  if (visitCounterEl) {
+    fetch("/api/visits")
+      .then(res => (res.ok ? res.json() : Promise.reject()))
+      .then(data => {
+        if (typeof data.count === "number") {
+          visitCounterEl.textContent = `${data.count.toLocaleString()} visits`;
+          visitCounterEl.hidden = false;
+        }
+      })
+      .catch(() => {});
+  }
+
+  // ---------------------------------------------------------------------
   // Decorative background parallax — purely cosmetic, so it's skipped
   // entirely for prefers-reduced-motion rather than just slowed down.
   // ---------------------------------------------------------------------

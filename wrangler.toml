@@ -1,0 +1,14 @@
+# Config for the Worker that serves gudanah.com itself (site + visit
+# counter). Not to be confused with worker/wrangler.toml, which is the
+# separate AI Verdict proxy service.
+name = "gudanahats"
+main = "site-worker.js"
+compatibility_date = "2026-08-11"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[kv_namespaces]]
+binding = "VISITS"
+id = "1444013feb31466fa7d67076b47b5163"

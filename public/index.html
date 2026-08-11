@@ -8,6 +8,8 @@
 <link rel="canonical" href="https://gudanah.com/" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <meta name="theme-color" content="#0f1115" />
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Free ATS Resume Checker — Gudanah" />
@@ -27,6 +29,55 @@
   "operatingSystem": "Any (runs in browser)",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "description": "Free ATS resume checker that scores a resume against a job description by keyword match, entirely in the browser."
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an ATS (Applicant Tracking System)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An ATS is software companies use to collect, filter, and rank job applications before a recruiter ever opens them. Many ATS platforms score or filter resumes based on how well they match the keywords in the job posting — this tool gives you that same kind of keyword view of your own resume."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this resume checker really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You get 5 free checks per day, no account or credit card required. The keyword matching runs in your browser, so there's no per-check cost to offer it for free."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool store or upload my resume?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Your resume and job description are processed entirely in your browser and never uploaded, stored, or logged. The one exception is the optional \"Get AI verdict\" button, which sends that text to Google's Gemini API only when you click it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate is the match score?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It's a directional signal, not a guarantee. Real ATS software varies widely in how it parses and scores resumes. This tool highlights the keywords a typical ATS is likely to look for so you can close obvious gaps — it isn't a simulation of any specific company's system."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this for every job I apply to?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — re-run the check for each job description, since the important keywords change with every posting. You get 5 free checks per day, which resets at midnight."
+      }
+    }
+  ]
 }
 </script>
 
@@ -52,7 +103,10 @@
 
 <header class="site-header">
   <div class="wrap site-header-inner">
-    <a class="brand" href="/">gudanah<span class="brand-accent">.com</span></a>
+    <div class="brand-group">
+      <a class="brand" href="/">gudanah<span class="brand-accent">.com</span></a>
+      <span id="visit-counter" class="visit-counter" aria-live="polite" hidden></span>
+    </div>
     <!-- Tool nav: this is the one piece every tool page on the site shares.
          To add a new tool later: build it at /<tool-slug>/index.html, then
          add one <li> here AND to this same block on every other tool
@@ -135,7 +189,7 @@
   <aside class="ad-slot ad-slot--rectangle" aria-hidden="true"><span>Ad space</span></aside>
 
   <section class="privacy-note">
-    <p>🔒 The match check above runs entirely in your browser — nothing is uploaded, stored, or logged. The optional "Get AI verdict" button is the one exception: clicking it sends this text to Google's Gemini API to generate a summary.</p>
+    <p>🔒 The match check above runs entirely in your browser — your resume and job description are never uploaded, stored, or logged. The optional "Get AI verdict" button is the one exception for that text: clicking it sends this text to Google's Gemini API to generate a summary. (Separately, loading this page pings a simple visit counter — no resume/JD text, no personal data, just a shared number going up by one.)</p>
   </section>
 
   <section class="info-section">
@@ -158,6 +212,35 @@
         </ul>
       </div>
     </div>
+  </section>
+
+  <section class="faq-section">
+    <h2>Frequently asked questions</h2>
+
+    <details class="faq-item">
+      <summary>What is an ATS (Applicant Tracking System)?</summary>
+      <p>An ATS is software companies use to collect, filter, and rank job applications before a recruiter ever opens them. Many ATS platforms score or filter resumes based on how well they match the keywords in the job posting — this tool gives you that same kind of keyword view of your own resume.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Is this resume checker really free?</summary>
+      <p>Yes. You get 5 free checks per day, no account or credit card required. The keyword matching runs in your browser, so there's no per-check cost to offer it for free.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Does this tool store or upload my resume?</summary>
+      <p>No. Your resume and job description are processed entirely in your browser and never uploaded, stored, or logged. The one exception is the optional "Get AI verdict" button, which sends that text to Google's Gemini API only when you click it.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>How accurate is the match score?</summary>
+      <p>It's a directional signal, not a guarantee. Real ATS software varies widely in how it parses and scores resumes. This tool highlights the keywords a typical ATS is likely to look for so you can close obvious gaps — it isn't a simulation of any specific company's system.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Can I use this for every job I apply to?</summary>
+      <p>Yes — re-run the check for each job description, since the important keywords change with every posting. You get 5 free checks per day, which resets at midnight.</p>
+    </details>
   </section>
 </main>
 

@@ -33,13 +33,17 @@ This tool needs neither:
    critical gaps first), and the score.
 
 ## Privacy stance (also a selling point)
-By default, nothing is uploaded — the keyword match check runs entirely in
-the visitor's browser. The one deliberate exception is the optional AI
-Verdict feature (see below): when a user clicks that button, the extracted
-resume + JD text is sent to a proxy and on to Google's Gemini API to
-generate a summary. This is disclosed on the button itself, not buried —
-the keyword checker's core promise ("nothing leaves your browser") stays
-true unless the user explicitly opts into the AI feature.
+By default, resume/JD text is never uploaded — the keyword match check
+runs entirely in the visitor's browser. The one deliberate exception is
+the optional AI Verdict feature (see below): when a user clicks that
+button, the extracted resume + JD text is sent to a proxy and on to
+Google's Gemini API to generate a summary. This is disclosed on the button
+itself, not buried — the keyword checker's core promise ("your resume and
+JD never leave your browser") stays true unless the user explicitly opts
+into the AI feature. The one other network call the page makes is a
+visit-counter ping on load (see GUIDELINES.md's second sanctioned
+exception) — it carries no resume/JD text and no per-visitor identifier,
+just an anonymous shared increment, so it doesn't compromise this promise.
 
 ## AI Verdict feature (sanctioned exception to "no backend")
 Recruiters can click "Get AI verdict" to receive a short, structured
@@ -67,14 +71,17 @@ the request. Scope of the exception, kept as narrow as possible:
 - `pdf.js` (CDN) for client-side PDF text extraction — the uploaded file
   is read locally via the File API and never leaves the browser; only the
   extracted text is used (and only sent onward if AI Verdict is clicked).
-- Cloudflare Worker (`worker/index.js`) — the one exception above. Free
-  tier, deployed separately from the static site.
+- Cloudflare Worker (`worker/index.js`) — the AI Verdict exception above.
+  Free tier, deployed separately from the static site.
+- `site-worker.js` — the second sanctioned exception (see GUIDELINES.md):
+  serves `/api/visits` (Workers KV counter) and falls through to static
+  assets for everything else.
 - Deploy target: live at gudanah.com via a Cloudflare Worker
-  (`gudanahats`) serving static assets — see `deploy.sh` and the
-  "Deploying" section in `README.md`. Not Cloudflare Pages: the domain's
-  DNS was already a Workers Custom Domain binding before deploy, pointing
-  at a placeholder Worker, so deploying our static assets to that same
-  Worker name was simpler than migrating the DNS to Pages.
+  (`gudanahats`) serving `public/` as static assets — see `deploy.sh` and
+  the "Deploying" section in `README.md`. Not Cloudflare Pages: the
+  domain's DNS was already a Workers Custom Domain binding before deploy,
+  pointing at a placeholder Worker, so deploying our static assets to that
+  same Worker name was simpler than migrating the DNS to Pages.
 
 ## Site structure: gudanah.com is a hub, this is the first tool
 gudanah.com is meant to host more than one free tool over time, each
@@ -84,25 +91,32 @@ exactly one tool, living at the site root (`/`) so the existing SEO/URL
 recruiters already reach isn't disturbed.
 
 **Adding a new tool later:**
-1. Build it at `/<tool-slug>/index.html` (its own self-contained
+1. Build it at `public/<tool-slug>/index.html` (its own self-contained
    HTML/CSS/JS — no shared framework, per GUIDELINES.md #6).
 2. Copy the `<header class="site-header">` block from this `index.html`
    into the new page, and add one `<li>` for the new tool.
 3. Add that same `<li>` to *every other* tool page's header (including
    this one) so the nav stays in sync. There's no shared include/template
    — that's a deliberate zero-build tradeoff, not an oversight.
-4. Add the new URL to `sitemap.xml`.
+4. Add the new URL to `public/sitemap.xml`.
 
 ## File structure
 ```
 gudanah-ats-checker/
 ├── DOCUMENTATION.md   (this file)
 ├── GUIDELINES.md      (scope guardrails — read before adding anything)
-├── index.html
-├── styles.css
-├── app.js
+├── wrangler.toml      (deploy config for gudanah.com: assets + site-worker.js)
+├── site-worker.js     (visit counter route, else serves public/)
+├── deploy.sh
+├── public/            (everything actually served at gudanah.com)
+│   ├── index.html
+│   ├── styles.css
+│   ├── app.js
+│   ├── favicon.svg
+│   ├── robots.txt
+│   └── sitemap.xml
 └── worker/
-    ├── index.js       (Cloudflare Worker — Gemini proxy)
+    ├── index.js       (separate Cloudflare Worker — Gemini proxy)
     └── README.md      (deploy steps, incl. account setup you must do)
 ```
 

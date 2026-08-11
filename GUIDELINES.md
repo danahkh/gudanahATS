@@ -4,22 +4,30 @@ These are hard constraints for this project, not suggestions. If a change
 would violate one of these, it goes in DOCUMENTATION.md's Phase 2 list
 instead of getting built now.
 
-1. **No backend, except the one sanctioned exception below.** If a new
+1. **No backend, except the sanctioned exceptions below.** If a new
    feature seems to need a server, default answer is still no — redesign
-   the feature. The AI Verdict proxy is the single approved exception,
-   and it doesn't open the door to adding others without the same
-   explicit sign-off.
+   the feature. The AI Verdict proxy and the visit counter are the only
+   approved exceptions, and neither opens the door to adding others
+   without the same explicit sign-off.
 2. **No paid or approval-gated third-party service, except Gemini's free
    tier for AI Verdict.** No AdSense script, no Stripe integration, no
    other ML API. This is the entire reason this idea replaced the CRM —
    don't reintroduce the same bottleneck outside the one carved-out case.
+   Cloudflare KV (backing the visit counter) doesn't count as a new
+   third-party dependency — it's the free tier of the same host already
+   serving the site, not an external service being added.
 3. **No dataset.** Any list the matching logic needs (stopwords, skill
    hints) must be a small hardcoded array committed in the source, not
    fetched, not trained, not scraped.
-4. **Nothing leaves the browser, except when a user explicitly clicks "Get
-   AI verdict."** The keyword-matching core must keep working exactly as
-   before with zero network calls. The AI feature is opt-in per click,
-   never automatic, and always disclosed on the control that triggers it.
+4. **No resume or JD text ever leaves the browser, except when a user
+   explicitly clicks "Get AI verdict."** The keyword-matching core must
+   keep working exactly as before with zero network calls carrying that
+   text. The AI feature is opt-in per click, never automatic, and always
+   disclosed on the control that triggers it. (The visit counter is a
+   narrow, disclosed carve-out to the *automatic* half of this rule — see
+   its sanctioned-exception entry below — but it never carries resume/JD
+   content or any per-visitor identifier, so the substance of this rule
+   still holds.)
 5. **One page, one job.** Paste JD, paste resume, get score + gaps. Any
    feature request that isn't that gets written down for Phase 2, not
    bolted on now.
@@ -50,3 +58,16 @@ without being stealable. Its scope is locked to exactly this:
   not get bundled in silently because "the proxy already exists."
 - Any account/API-key creation this requires is done by the human running
   this project, never by an agent acting on their behalf.
+
+## Sanctioned exception: the visit counter
+
+`site-worker.js` (the Worker serving gudanah.com itself, per root
+`wrangler.toml`) handles exactly one dynamic route, `/api/visits` —
+increments a single Workers KV counter and returns the new total. Scope:
+- One KV key, one number. No per-visitor tracking, no IP/user-agent
+  logging, no cookies — the count is a shared aggregate, not analytics.
+- Best-effort, not strictly atomic (KV get-then-put has a race window
+  under concurrent requests) — accepted tradeoff rather than pulling in a
+  Durable Object for a vanity number.
+- Same rule as the AI proxy: a second responsibility for this endpoint is
+  a new decision, not a silent add-on.

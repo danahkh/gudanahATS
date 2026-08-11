@@ -106,11 +106,24 @@ body {
   min-width: 0;
 }
 
+.brand-group {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
 .brand {
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--text);
   text-decoration: none;
+}
+
+.visit-counter {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  white-space: nowrap;
 }
 
 .brand-accent {
@@ -528,6 +541,61 @@ main.wrap {
 
 .info-card li:last-child {
   margin-bottom: 0;
+}
+
+.faq-section {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+  margin-top: 28px;
+}
+
+.faq-section h2 {
+  font-size: 1.3rem;
+  margin: 0 0 16px;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-item summary {
+  padding: 14px 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-right: 28px;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 4px;
+  top: 14px;
+  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 1.1rem;
+}
+
+.faq-item[open] summary::after {
+  content: "\2212";
+}
+
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.faq-item p {
+  margin: 0 0 16px;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  max-width: 720px;
 }
 
 .site-footer {
