@@ -430,21 +430,26 @@ main.wrap {
   color: var(--text-dim);
 }
 
-/* Reserved ad space: no ad network script wired in (see GUIDELINES.md #2),
-   but real min-heights so the layout won't jump once one is. The label is
-   visible now for transparency (this is empty reserved space, not a
-   rendering bug) and stays readable at a glance once ads render over it. */
-.ad-slot {
+/* Reserved ad space: AdSense is wired in (see GUIDELINES.md #2 exception),
+   but each slot below keeps this placeholder look until it has a real
+   ad-slot ID configured in app.js's AD_SLOTS — real min-heights so the
+   layout won't jump once one renders. The label stays visible until then
+   for transparency (this is empty reserved space, not a rendering bug). */
+.ad-slot,
+.skyscraper-ad {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 0 28px;
   border: 1px dashed var(--border);
   border-radius: var(--radius);
   color: var(--text-dim);
   font-size: 0.78rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.ad-slot {
+  margin: 0 0 28px;
 }
 
 .ad-slot--leaderboard {
@@ -456,6 +461,35 @@ main.wrap {
   max-width: 336px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Skyscraper slots live in the empty side margins outside the 960px
+   content column — fixed so they stay put while scrolling, like a
+   standard sticky skyscraper ad. Hidden below 1400px so they never
+   overlap the content column (960px + padding + side gutters needs
+   roughly that much width) on laptops, tablets, or phones. */
+.skyscraper-ad {
+  display: none;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 160px;
+  height: 600px;
+  z-index: 1;
+}
+
+.skyscraper-ad--left {
+  left: 24px;
+}
+
+.skyscraper-ad--right {
+  right: 24px;
+}
+
+@media (min-width: 1400px) {
+  .skyscraper-ad {
+    display: flex;
+  }
 }
 
 .privacy-note {

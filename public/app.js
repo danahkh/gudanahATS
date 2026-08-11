@@ -469,6 +469,42 @@
   });
 
   // ---------------------------------------------------------------------
+  // AdSense — manual ad units, one per reserved slot (see GUIDELINES.md's
+  // AdSense exception). Each slot ID starts empty; until it's filled in
+  // from the AdSense dashboard, the element keeps showing the plain
+  // "Ad space" placeholder from index.html — same gating pattern as
+  // AI_VERDICT_ENDPOINT below.
+  // ---------------------------------------------------------------------
+
+  const ADSENSE_CLIENT = "ca-pub-9516689459519928";
+  const AD_SLOTS = {
+    "ad-leaderboard": "",       // 728x90-ish, above the inputs
+    "ad-rectangle": "",         // 300x250, below results
+    "ad-skyscraper-left": "",   // 160x600, left margin (wide screens only)
+    "ad-skyscraper-right": "",  // 160x600, right margin (wide screens only)
+  };
+
+  Object.entries(AD_SLOTS).forEach(([elId, slotId]) => {
+    if (!slotId) return;
+    const el = document.getElementById(elId);
+    // Skip slots CSS currently hides (the skyscrapers, below 1400px) —
+    // requesting an ad into a display:none container is against AdSense
+    // policy, not just wasted.
+    if (!el || getComputedStyle(el).display === "none") return;
+    el.removeAttribute("aria-hidden");
+    el.innerHTML = "";
+    const ins = document.createElement("ins");
+    ins.className = "adsbygoogle";
+    ins.style.display = "block";
+    ins.setAttribute("data-ad-client", ADSENSE_CLIENT);
+    ins.setAttribute("data-ad-slot", slotId);
+    ins.setAttribute("data-ad-format", "auto");
+    ins.setAttribute("data-full-width-responsive", "true");
+    el.appendChild(ins);
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  });
+
+  // ---------------------------------------------------------------------
   // Visit counter — best-effort and non-blocking. Stays hidden (rather
   // than showing "0" or an error) if the endpoint isn't reachable, since
   // it's decorative and must never get in the way of the actual tool.

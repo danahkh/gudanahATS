@@ -10,12 +10,14 @@ instead of getting built now.
    approved exceptions, and neither opens the door to adding others
    without the same explicit sign-off.
 2. **No paid or approval-gated third-party service, except Gemini's free
-   tier for AI Verdict.** No AdSense script, no Stripe integration, no
-   other ML API. This is the entire reason this idea replaced the CRM —
-   don't reintroduce the same bottleneck outside the one carved-out case.
-   Cloudflare KV (backing the visit counter) doesn't count as a new
-   third-party dependency — it's the free tier of the same host already
-   serving the site, not an external service being added.
+   tier for AI Verdict and Google AdSense (see its sanctioned-exception
+   entry below — approved once an actual AdSense account existed to wire
+   up).** No Stripe integration, no other ML API. This is the entire
+   reason this idea replaced the CRM — don't reintroduce the same
+   bottleneck outside the carved-out cases. Cloudflare KV (backing the
+   visit counter) doesn't count as a new third-party dependency either —
+   it's the free tier of the same host already serving the site, not an
+   external service being added.
 3. **No dataset.** Any list the matching logic needs (stopwords, skill
    hints) must be a small hardcoded array committed in the source, not
    fetched, not trained, not scraped.
@@ -71,3 +73,23 @@ increments a single Workers KV counter and returns the new total. Scope:
   Durable Object for a vanity number.
 - Same rule as the AI proxy: a second responsibility for this endpoint is
   a new decision, not a silent add-on.
+
+## Sanctioned exception: Google AdSense
+
+The site's monetization plan (see DOCUMENTATION.md) always intended
+AdSense once an account existed to wire up — this is that. Scope:
+- Site-wide verification/loader script in `index.html`
+  (`adsbygoogle.js?client=ca-pub-...`) and `public/ads.txt`, both required
+  by Google for the site to be reviewable and for ads to serve at all.
+- Manual ad units only, one per reserved slot, gated by `AD_SLOTS` in
+  `app.js` — a slot renders a real ad only once given an actual ad-slot
+  ID from the AdSense dashboard; until then it's the same plain
+  placeholder as before. No Auto ads (Google choosing placement anywhere
+  on the page), by explicit choice.
+- Ad slots never render into a `display:none` container (checked at
+  render time) — AdSense policy prohibits requesting ads into hidden
+  elements, which the skyscraper slots are below 1400px viewport width.
+- Publisher ID (`pub-9516689459519928`) is not a secret — it's public in
+  every AdSense site's page source — but ad-slot IDs and any account
+  changes (creating units, toggling Auto ads, requesting review) are the
+  human running this project's to do, never an agent's.

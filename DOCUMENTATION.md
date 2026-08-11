@@ -149,14 +149,14 @@ the deployed site:
   freemium *mechanism*, wired up now even though no real paywall exists yet.
 - Optional "Get AI verdict" button (see above) — clearly marked as sending
   data to an external AI service, off by default (never auto-triggered).
-- A clearly labeled placeholder ad slot in the layout (empty div, no ad
-  network script) — reserves the space so wiring in AdSense later is a
-  one-line change, not a redesign.
+- Four clearly labeled ad slots (leaderboard, rectangle, two skyscrapers)
+  — AdSense is wired in (see GUIDELINES.md's sanctioned exception), each
+  slot rendering a real ad once given an ad-slot ID in `app.js`'s
+  `AD_SLOTS`, and staying a plain labeled placeholder until then.
 - Responsive, accessible (color is never the only signal — score bands are
   labeled in text too).
 
 ## Phase 2 (explicitly deferred — do not build until v1 is validated)
-- Real AdSense integration (requires their review process).
 - Real payment wiring for a paywall past the free daily cap (Stripe),
   including gating the AI Verdict feature once Gemini free-tier limits
   are a real constraint.

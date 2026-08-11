@@ -11,6 +11,11 @@
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
+<!-- Google AdSense: required for site verification/review, and loads the
+     library that renders the manual ad units below (see app.js AD_SLOTS —
+     each stays a plain placeholder until given a real ad-slot ID). -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9516689459519928" crossorigin="anonymous"></script>
+
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Free ATS Resume Checker — Gudanah" />
 <meta property="og:description" content="See your resume the way an ATS sees it. Free keyword match score against any job description, no signup." />
@@ -126,7 +131,7 @@
   </section>
 
   <!-- Ad slot placeholder: intentionally empty, no ad network script wired in yet (see DOCUMENTATION.md Phase 2) -->
-  <aside class="ad-slot ad-slot--leaderboard" aria-hidden="true"><span>Ad space</span></aside>
+  <aside id="ad-leaderboard" class="ad-slot ad-slot--leaderboard" aria-hidden="true"><span>Ad space</span></aside>
 
   <section class="inputs">
     <div class="field">
@@ -186,7 +191,7 @@
   </section>
 
   <!-- Ad slot placeholder: intentionally empty, no ad network script wired in yet (see DOCUMENTATION.md Phase 2) -->
-  <aside class="ad-slot ad-slot--rectangle" aria-hidden="true"><span>Ad space</span></aside>
+  <aside id="ad-rectangle" class="ad-slot ad-slot--rectangle" aria-hidden="true"><span>Ad space</span></aside>
 
   <section class="privacy-note">
     <p>🔒 The match check above runs entirely in your browser — your resume and job description are never uploaded, stored, or logged. The optional "Get AI verdict" button is the one exception for that text: clicking it sends this text to Google's Gemini API to generate a summary. (Separately, loading this page pings a simple visit counter — no resume/JD text, no personal data, just a shared number going up by one.)</p>
@@ -243,6 +248,12 @@
     </details>
   </section>
 </main>
+
+<!-- Wide-screen only (see .skyscraper-ad's media query) — hidden by CSS on
+     anything narrower than a large desktop, so they never crowd the tool
+     on laptop/tablet/phone. -->
+<aside id="ad-skyscraper-left" class="skyscraper-ad skyscraper-ad--left" aria-hidden="true"><span>Ad space</span></aside>
+<aside id="ad-skyscraper-right" class="skyscraper-ad skyscraper-ad--right" aria-hidden="true"><span>Ad space</span></aside>
 
 <footer class="site-footer">
   <div class="wrap">
