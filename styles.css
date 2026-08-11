@@ -43,6 +43,52 @@ body {
   padding: 0 20px;
 }
 
+/* Decorative background: fixed behind everything (z-index:-1 relies on
+   body's own background becoming the page canvas, which is the standard
+   way this sits behind normal-flow content without a stacking hack). The
+   whole group nudges opposite the cursor for a subtle parallax; each blob
+   also drifts on its own slow loop so it's not fully static even when the
+   mouse doesn't move. */
+.bg-decor {
+  position: fixed;
+  inset: -10%;
+  z-index: -1;
+  pointer-events: none;
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+
+.blob {
+  position: absolute;
+  width: 42vw;
+  height: 42vw;
+  max-width: 520px;
+  max-height: 520px;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.3;
+  animation: drift 24s ease-in-out infinite alternate;
+}
+
+@media (prefers-color-scheme: light) {
+  .blob { opacity: 0.16; }
+}
+
+.blob-1 { top: -8%; left: -8%; background: var(--accent); }
+.blob-2 { top: 25%; right: -12%; background: var(--accent-2); animation-delay: -8s; }
+.blob-3 { bottom: -18%; left: 22%; background: var(--good); animation-delay: -16s; }
+
+@keyframes drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(3%, 4%) scale(1.08); }
+  100% { transform: translate(-3%, -2%) scale(0.95); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob { animation: none; }
+  .bg-decor { transition: none; }
+}
+
 .site-header {
   border-bottom: 1px solid var(--border);
   padding: 18px 0;
@@ -371,8 +417,32 @@ main.wrap {
   color: var(--text-dim);
 }
 
+/* Reserved ad space: no ad network script wired in (see GUIDELINES.md #2),
+   but real min-heights so the layout won't jump once one is. The label is
+   visible now for transparency (this is empty reserved space, not a
+   rendering bug) and stays readable at a glance once ads render over it. */
 .ad-slot {
-  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 28px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ad-slot--leaderboard {
+  min-height: 90px;
+}
+
+.ad-slot--rectangle {
+  min-height: 250px;
+  max-width: 336px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .privacy-note {
@@ -417,6 +487,47 @@ main.wrap {
   color: var(--text-dim);
   margin: 0 0 20px;
   font-size: 0.92rem;
+}
+
+.info-section {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+  margin-top: 28px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+@media (max-width: 720px) {
+  .info-grid { grid-template-columns: 1fr; }
+}
+
+.info-card {
+  min-width: 0;
+}
+
+.info-card h2 {
+  font-size: 1.05rem;
+  margin: 0 0 12px;
+}
+
+.info-card ol,
+.info-card ul {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.info-card li {
+  margin-bottom: 8px;
+}
+
+.info-card li:last-child {
+  margin-bottom: 0;
 }
 
 .site-footer {

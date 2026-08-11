@@ -468,6 +468,26 @@
     }
   });
 
+  // ---------------------------------------------------------------------
+  // Decorative background parallax — purely cosmetic, so it's skipped
+  // entirely for prefers-reduced-motion rather than just slowed down.
+  // ---------------------------------------------------------------------
+
+  const bgDecor = document.querySelector(".bg-decor");
+  if (bgDecor && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    let pending = false;
+    window.addEventListener("mousemove", e => {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(() => {
+        const x = e.clientX / window.innerWidth - 0.5;
+        const y = e.clientY / window.innerHeight - 0.5;
+        bgDecor.style.transform = `translate(${x * -24}px, ${y * -24}px)`;
+        pending = false;
+      });
+    });
+  }
+
   els.checkBtn.addEventListener("click", runCheck);
   els.resumeUpload.addEventListener("change", handlePdfUpload);
   els.aiVerdictBtn.addEventListener("click", getAiVerdict);

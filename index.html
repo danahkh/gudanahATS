@@ -33,6 +33,15 @@
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<!-- Purely decorative, aria-hidden, no content — a couple of blurred
+     gradient blobs behind everything that drift slowly and nudge slightly
+     with the cursor. Disabled entirely under prefers-reduced-motion. -->
+<div class="bg-decor" aria-hidden="true">
+  <span class="blob blob-1"></span>
+  <span class="blob blob-2"></span>
+  <span class="blob blob-3"></span>
+</div>
+
 <div id="welcome-modal" class="modal-overlay" hidden>
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="welcome-modal-title">
     <h2 id="welcome-modal-title">Quick heads up</h2>
@@ -61,6 +70,9 @@
     <h1>See your resume the way an ATS sees it</h1>
     <p>Paste a job description and your resume. Get a match score and the exact keywords you're missing — in seconds, for free. Nothing you paste is uploaded anywhere; the check runs entirely in your browser.</p>
   </section>
+
+  <!-- Ad slot placeholder: intentionally empty, no ad network script wired in yet (see DOCUMENTATION.md Phase 2) -->
+  <aside class="ad-slot ad-slot--leaderboard" aria-hidden="true"><span>Ad space</span></aside>
 
   <section class="inputs">
     <div class="field">
@@ -120,10 +132,32 @@
   </section>
 
   <!-- Ad slot placeholder: intentionally empty, no ad network script wired in yet (see DOCUMENTATION.md Phase 2) -->
-  <aside class="ad-slot" aria-hidden="true"></aside>
+  <aside class="ad-slot ad-slot--rectangle" aria-hidden="true"><span>Ad space</span></aside>
 
   <section class="privacy-note">
     <p>🔒 The match check above runs entirely in your browser — nothing is uploaded, stored, or logged. The optional "Get AI verdict" button is the one exception: clicking it sends this text to Google's Gemini API to generate a summary.</p>
+  </section>
+
+  <section class="info-section">
+    <div class="info-grid">
+      <div class="info-card">
+        <h2>How this works</h2>
+        <ol>
+          <li>Paste the job description you're applying to.</li>
+          <li>Paste your resume, or upload it as a PDF.</li>
+          <li>We pull the JD's most important keywords and check which ones actually show up in your resume — ranked so the biggest gaps are easy to spot.</li>
+        </ol>
+      </div>
+      <div class="info-card">
+        <h2>Tips to raise your score</h2>
+        <ul>
+          <li>Match the JD's exact wording — "project management" scores better than "managed projects" against a keyword-matching ATS.</li>
+          <li>Re-run the check per job. The "important" keywords change with every posting, so a resume tuned for one JD won't automatically score well on another.</li>
+          <li>Don't add a missing keyword you can't back up — a skill that doesn't hold up in an interview costs more than a slightly lower match score.</li>
+          <li>A high score here isn't a guarantee — real ATS software varies. Treat this as a strong directional signal, not gospel.</li>
+        </ul>
+      </div>
+    </div>
   </section>
 </main>
 
