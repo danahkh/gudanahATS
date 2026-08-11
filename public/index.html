@@ -130,8 +130,11 @@
     <p>Paste a job description and your resume. Get a match score and the exact keywords you're missing — in seconds, for free. Nothing you paste is uploaded anywhere; the check runs entirely in your browser.</p>
   </section>
 
-  <!-- Ad slot placeholder: intentionally empty, no ad network script wired in yet (see DOCUMENTATION.md Phase 2) -->
-  <aside id="ad-leaderboard" class="ad-slot ad-slot--leaderboard" aria-hidden="true"><span>Ad space</span></aside>
+  <!-- Ad slot placeholder: hidden (see the `hidden` attribute below) while
+       an AdSense account issue is sorted out with Google support. Once
+       resolved, filling in this slot's ID in app.js's AD_SLOTS clears
+       `hidden` automatically — no HTML change needed then. -->
+  <aside id="ad-leaderboard" class="ad-slot ad-slot--leaderboard" aria-hidden="true" hidden><span>Ad space</span></aside>
 
   <section class="inputs">
     <div class="field">
@@ -191,7 +194,7 @@
   </section>
 
   <!-- Ad slot placeholder: intentionally empty, no ad network script wired in yet (see DOCUMENTATION.md Phase 2) -->
-  <aside id="ad-rectangle" class="ad-slot ad-slot--rectangle" aria-hidden="true"><span>Ad space</span></aside>
+  <aside id="ad-rectangle" class="ad-slot ad-slot--rectangle" aria-hidden="true" hidden><span>Ad space</span></aside>
 
   <section class="privacy-note">
     <p>🔒 The match check above runs entirely in your browser — your resume and job description are never uploaded, stored, or logged. The optional "Get AI verdict" button is the one exception for that text: clicking it sends this text to Google's Gemini API to generate a summary. (Separately, loading this page pings a simple visit counter — no resume/JD text, no personal data, just a shared number going up by one.)</p>
@@ -252,8 +255,8 @@
 <!-- Wide-screen only (see .skyscraper-ad's media query) — hidden by CSS on
      anything narrower than a large desktop, so they never crowd the tool
      on laptop/tablet/phone. -->
-<aside id="ad-skyscraper-left" class="skyscraper-ad skyscraper-ad--left" aria-hidden="true"><span>Ad space</span></aside>
-<aside id="ad-skyscraper-right" class="skyscraper-ad skyscraper-ad--right" aria-hidden="true"><span>Ad space</span></aside>
+<aside id="ad-skyscraper-left" class="skyscraper-ad skyscraper-ad--left" aria-hidden="true" hidden><span>Ad space</span></aside>
+<aside id="ad-skyscraper-right" class="skyscraper-ad skyscraper-ad--right" aria-hidden="true" hidden><span>Ad space</span></aside>
 
 <footer class="site-footer">
   <div class="wrap">

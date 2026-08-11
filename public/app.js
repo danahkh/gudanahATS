@@ -487,10 +487,16 @@
   Object.entries(AD_SLOTS).forEach(([elId, slotId]) => {
     if (!slotId) return;
     const el = document.getElementById(elId);
+    if (!el) return;
+    // Clears the manual "placeholder hidden until an account issue is
+    // resolved" state from index.html — separate from the CSS-driven
+    // display:none check below (the skyscraper breakpoint), which stays
+    // in effect regardless.
+    el.hidden = false;
     // Skip slots CSS currently hides (the skyscrapers, below 1400px) —
     // requesting an ad into a display:none container is against AdSense
     // policy, not just wasted.
-    if (!el || getComputedStyle(el).display === "none") return;
+    if (getComputedStyle(el).display === "none") return;
     el.removeAttribute("aria-hidden");
     el.innerHTML = "";
     const ins = document.createElement("ins");

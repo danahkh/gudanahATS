@@ -435,8 +435,12 @@ main.wrap {
    ad-slot ID configured in app.js's AD_SLOTS — real min-heights so the
    layout won't jump once one renders. The label stays visible until then
    for transparency (this is empty reserved space, not a rendering bug). */
-.ad-slot,
-.skyscraper-ad {
+/* :not([hidden]) here for the same reason as .modal-overlay's version
+   below: [hidden] and a class selector have equal specificity, so without
+   this the always-on "display: flex" wins the tie and the `hidden`
+   attribute set from index.html (or by JS) gets silently ignored. */
+.ad-slot:not([hidden]),
+.skyscraper-ad:not([hidden]) {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -487,7 +491,7 @@ main.wrap {
 }
 
 @media (min-width: 1400px) {
-  .skyscraper-ad {
+  .skyscraper-ad:not([hidden]) {
     display: flex;
   }
 }
