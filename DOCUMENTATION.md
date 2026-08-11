@@ -69,8 +69,12 @@ the request. Scope of the exception, kept as narrow as possible:
   extracted text is used (and only sent onward if AI Verdict is clicked).
 - Cloudflare Worker (`worker/index.js`) — the one exception above. Free
   tier, deployed separately from the static site.
-- Deploy target (Phase 2): Cloudflare Pages or GitHub Pages for the
-  static site, both free.
+- Deploy target: live at gudanah.com via a Cloudflare Worker
+  (`gudanahats`) serving static assets — see `deploy.sh` and the
+  "Deploying" section in `README.md`. Not Cloudflare Pages: the domain's
+  DNS was already a Workers Custom Domain binding before deploy, pointing
+  at a placeholder Worker, so deploying our static assets to that same
+  Worker name was simpler than migrating the DNS to Pages.
 
 ## Site structure: gudanah.com is a hub, this is the first tool
 gudanah.com is meant to host more than one free tool over time, each
@@ -142,8 +146,6 @@ the deployed site:
 - Real payment wiring for a paywall past the free daily cap (Stripe),
   including gating the AI Verdict feature once Gemini free-tier limits
   are a real constraint.
-- Deployment to Cloudflare Pages / GitHub Pages + DNS pointed from
-  gudanah.com.
 - Any analytics (only after deciding on a privacy-respecting option —
   don't undercut the "nothing leaves your browser" pitch).
 

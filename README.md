@@ -40,6 +40,24 @@ The "Get AI verdict" button stays hidden until `AI_VERDICT_ENDPOINT` in
 [`worker/README.md`](worker/README.md) for that setup (requires your own
 free Cloudflare + Gemini accounts).
 
+## Deploying
+
+Live at gudanah.com via a Cloudflare Worker (`gudanahats`) serving static
+assets — not Cloudflare Pages (the domain's DNS is a Workers Custom Domain
+binding, created before this repo existed, so the Worker path was simpler
+than fighting that). To redeploy after a change:
+
+```
+./deploy.sh
+```
+
+This copies only the public site files (not `worker/`, not the docs) into a
+clean temp directory and runs `wrangler deploy --assets` on that — Wrangler
+doesn't honor `.gitignore`-style ignore files for either Pages or Workers
+asset uploads, so this script is the source of truth for what's actually
+public. Requires `wrangler login` once first (opens a browser to
+authorize).
+
 ## Project docs
 
 - [`DOCUMENTATION.md`](DOCUMENTATION.md) — what this is, how the matching
