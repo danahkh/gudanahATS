@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Free ATS Resume Checker — Match Your Resume to Any Job Description | Gudanah</title>
+<meta name="description" content="Free ATS resume checker. Paste your resume and a job description to see your keyword match score and exactly which keywords are missing. Runs in your browser — nothing is uploaded." />
+<link rel="canonical" href="https://gudanah.com/" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<meta name="theme-color" content="#0f1115" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Free ATS Resume Checker — Gudanah" />
+<meta property="og:description" content="See your resume the way an ATS sees it. Free keyword match score against any job description, no signup." />
+<meta property="og:url" content="https://gudanah.com/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Free ATS Resume Checker — Gudanah" />
+<meta name="twitter:description" content="Free keyword match score against any job description, no signup." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Gudanah ATS Match Checker",
+  "url": "https://gudanah.com/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free ATS resume checker that scores a resume against a job description by keyword match, entirely in the browser."
+}
+</script>
+
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="welcome-modal" class="modal-overlay" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="welcome-modal-title">
+    <h2 id="welcome-modal-title">Quick heads up</h2>
+    <p>This tool is free, with a limit of <strong><span id="welcome-modal-limit">5</span> checks per day</strong> per visitor — that resets every day at midnight. Plenty for comparing your resume against a few postings.</p>
+    <button id="welcome-modal-close" class="primary-btn">Got it</button>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap site-header-inner">
+    <a class="brand" href="/">gudanah<span class="brand-accent">.com</span></a>
+    <!-- Tool nav: this is the one piece every tool page on the site shares.
+         To add a new tool later: build it at /<tool-slug>/index.html, then
+         add one <li> here AND to this same block on every other tool
+         page (no shared include — see GUIDELINES.md #6, zero build step). -->
+    <nav class="site-nav" aria-label="Tools">
+      <ul>
+        <li><a href="/" class="is-active">ATS Match Checker</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <h1>See your resume the way an ATS sees it</h1>
+    <p>Paste a job description and your resume. Get a match score and the exact keywords you're missing — in seconds, for free. Nothing you paste is uploaded anywhere; the check runs entirely in your browser.</p>
+  </section>
+
+  <section class="inputs">
+    <div class="field">
+      <div class="field-header">
+        <label for="jd">Job description</label>
+      </div>
+      <textarea id="jd" maxlength="20000" placeholder="Paste the full job posting here..."></textarea>
+    </div>
+    <div class="field">
+      <div class="field-header">
+        <label for="resume">Candidate resume</label>
+        <label class="upload-btn" for="resume-upload">
+          Upload PDF
+          <input type="file" id="resume-upload" accept="application/pdf" hidden />
+        </label>
+      </div>
+      <textarea id="resume" maxlength="20000" placeholder="Paste resume text here, or upload a PDF above..."></textarea>
+      <p id="upload-status" class="upload-status" hidden></p>
+    </div>
+  </section>
+
+  <div class="action-row">
+    <button id="check-btn" class="primary-btn">Check my match</button>
+    <span id="scan-counter" class="scan-counter"></span>
+  </div>
+
+  <section id="results" class="results" hidden>
+    <div class="score-card">
+      <div class="score-ring" id="score-ring">
+        <span id="score-number">0%</span>
+      </div>
+      <div class="score-label" id="score-label">Match score</div>
+    </div>
+
+    <div class="keyword-columns">
+      <div class="keyword-col">
+        <h2>Matched keywords <span id="matched-count" class="count-badge">0</span></h2>
+        <ul id="matched-list" class="keyword-list keyword-list--matched"></ul>
+      </div>
+      <div class="keyword-col">
+        <h2>Missing keywords <span id="missing-count" class="count-badge">0</span></h2>
+        <p class="hint">Ranked by importance — start from the top.</p>
+        <ul id="missing-list" class="keyword-list keyword-list--missing"></ul>
+      </div>
+    </div>
+
+    <div id="ai-verdict-block" class="ai-verdict-block" hidden>
+      <button id="ai-verdict-btn" class="secondary-btn">
+        Get AI verdict <span class="ai-disclosure">— sends this text to Google Gemini</span>
+      </button>
+      <div id="ai-verdict-output" class="ai-verdict-output" hidden></div>
+    </div>
+  </section>
+
+  <section id="limit-notice" class="limit-notice" hidden>
+    <p>You've used today's free scans. Come back tomorrow for more — or check back soon, upgrade options are coming.</p>
+  </section>
+
+  <!-- Ad slot placeholder: intentionally empty, no ad network script wired in yet (see DOCUMENTATION.md Phase 2) -->
+  <aside class="ad-slot" aria-hidden="true"></aside>
+
+  <section class="privacy-note">
+    <p>🔒 The match check above runs entirely in your browser — nothing is uploaded, stored, or logged. The optional "Get AI verdict" button is the one exception: clicking it sends this text to Google's Gemini API to generate a summary.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>gudanah.com</span>
+  </div>
+</footer>
+
+<!-- Pinned version + Subresource Integrity: if cdnjs ever serves anything
+     other than exactly this file, the browser refuses to run it instead of
+     silently executing tampered code. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+        integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e"
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="app.js"></script>
+</body>
+</html>
